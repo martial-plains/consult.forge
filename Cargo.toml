@@ -1,0 +1,27 @@
+[package]
+name = "forge-consult"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+description = "Consult for Forge: buffer, line, outline, org-heading, grep, find, locate, man and compile-error prompts with live preview"
+
+[package.metadata.forge]
+name = "consult"
+
+[package.metadata.forge.permissions]
+# The grep, find, locate and man commands shell out to these programs.
+processes = ["grep", "rg", "git", "find", "fd", "locate", "mdfind", "man"]
+
+# Standalone: not part of the main workspace build.
+[workspace]
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+forge-plugin-sdk = { git = "https://github.com/martial-plains/forge" }
+regex = "1"
+
+[profile.release]
+opt-level = "s"
+lto = true
