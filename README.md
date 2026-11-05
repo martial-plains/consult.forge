@@ -58,6 +58,33 @@ Commands that select a location preview it by moving point; cancelling with
 `C-g` restores the original position. Commands with side effects, such as
 running a macro or inserting a register, wait until a selection is confirmed.
 
+## Using in Forge
+
+Declare the package in `~/.config/forge/init.rhai` and bind keys to commands.
+These bindings load the plugin when first used:
+
+```rhai
+use_package("consult", #{
+  vc: #{
+    url: "https://github.com/martial-plains/consult.forge",
+    rev: "main",
+    make: "cargo build --release --target wasm32-wasip2 && cp target/wasm32-wasip2/release/forge_consult.wasm \"$OUT\"",
+  },
+  bind: #{
+    "C-s": "consult-line",
+    "C-x C-b": "consult-buffer",
+    "M-s g": "consult-ripgrep",
+  },
+});
+```
+
+Add bindings for any other commands from the table above, or invoke them with
+`M-x`. Run `M-x reload-init-file` after changing the configuration. The `vc`
+source tells Forge to build the plugin from Git; `make` must leave the
+WebAssembly component at `$OUT`. Alternatively, `index: "consult"` selects
+the `consult` entry from a configured package index, which provides a
+prebuilt component instead.
+
 ## Building
 
 This plugin uses `forge-plugin-sdk` from the Forge repository in `Cargo.toml`.
